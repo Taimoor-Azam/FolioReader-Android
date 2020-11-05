@@ -358,7 +358,7 @@ public class FolioActivity
         UiUtil.setColorIntToDrawable(config.getThemeColor(), menu.findItem(R.id.itemTts).getIcon());
 
         if (!config.isShowTts())
-            menu.findItem(R.id.itemTts).setVisible(false);
+            menu.findItem(R.id.itemTts).setVisible(true);
 
         return true;
     }
