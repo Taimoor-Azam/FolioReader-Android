@@ -128,6 +128,7 @@ class FolioWebView : WebView {
         return popupWindow.isShowing
     }
 
+    fun webViewPagerInti() = ::webViewPager.isInitialized
     private inner class HorizontalGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
@@ -139,14 +140,16 @@ class FolioWebView : WebView {
         override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             //Log.d(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
 
-            if (!webViewPager.isScrolling) {
-                // Need to complete the scroll as ViewPager thinks these touch events should not
-                // scroll it's pages.
-                //Log.d(LOG_TAG, "-> onFling -> completing scroll");
-                uiHandler.postDelayed({
-                    // Delayed to avoid inconsistency of scrolling in WebView
-                    scrollTo(getScrollXPixelsForPage(webViewPager!!.currentItem), 0)
-                }, 100)
+            if (webViewPagerInti()) {
+                if (!webViewPager.isScrolling) {
+                    // Need to complete the scroll as ViewPager thinks these touch events should not
+                    // scroll it's pages.
+                    //Log.d(LOG_TAG, "-> onFling -> completing scroll");
+                    uiHandler.postDelayed({
+                        // Delayed to avoid inconsistency of scrolling in WebView
+                        scrollTo(getScrollXPixelsForPage(webViewPager!!.currentItem), 0)
+                    }, 100)
+                }
             }
 
             lastScrollType = LastScrollType.USER
