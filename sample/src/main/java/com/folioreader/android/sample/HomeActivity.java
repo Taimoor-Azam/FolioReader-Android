@@ -16,21 +16,23 @@
 package com.folioreader.android.sample;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.folioreader.Config;
 import com.folioreader.FolioReader;
 import com.folioreader.model.HighLight;
-import com.folioreader.model.locators.ReadLocator;
+import com.folioreader.model.ReadPosition;
+import com.folioreader.model.ReadPositionImpl;
 import com.folioreader.ui.base.OnSaveHighlight;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.OnHighlightListener;
-import com.folioreader.util.ReadLocatorListener;
+import com.folioreader.util.ReadPositionListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
-        implements OnHighlightListener, ReadLocatorListener, FolioReader.OnClosedListener {
+        implements OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener {
 
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
     private FolioReader folioReader;
@@ -52,7 +54,7 @@ public class HomeActivity extends AppCompatActivity
 
         folioReader = FolioReader.get()
                 .setOnHighlightListener(this)
-                .setReadLocatorListener(this)
+                .setReadPositionListener(this)
                 .setOnClosedListener(this);
 
         getHighlightsAndSave();
@@ -67,7 +69,7 @@ public class HomeActivity extends AppCompatActivity
                 config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
 
                 folioReader.setConfig(config, true)
-                        .openBook(R.raw.accessible_epub_3);
+                        .openBook(R.raw.adventures);
             }
         });
 
@@ -75,29 +77,31 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-                ReadLocator readLocator = getLastReadLocator();
+                ReadPosition readPosition = getLastReadPosition();
 
                 Config config = AppUtil.getSavedConfig(getApplicationContext());
                 if (config == null)
                     config = new Config();
                 config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
 
-                folioReader.setReadLocator(readLocator);
-                folioReader.setConfig(config, true)
+                folioReader.setReadPosition(readPosition)
+                        .setConfig(config, true)
                         .openBook("file:///android_asset/TheSilverChair.epub");
             }
         });
     }
 
-    private ReadLocator getLastReadLocator() {
+    private ReadPosition getLastReadPosition() {
 
-        String jsonString = loadAssetTextAsString("Locators/LastReadLocators/last_read_locator_1.json");
-        return ReadLocator.fromJson(jsonString);
+        String jsonString = loadAssetTextAsString("read_positions/read_position.json");
+        return ReadPositionImpl.createInstance(jsonString);
     }
 
     @Override
-    public void saveReadLocator(ReadLocator readLocator) {
-        Log.i(LOG_TAG, "-> saveReadLocator -> " + readLocator.toJson());
+    public void saveReadPosition(ReadPosition readPosition) {
+
+        //Toast.makeText(this, "ReadPosition = " + readPosition.toJson(), Toast.LENGTH_SHORT).show();
+        Log.i(LOG_TAG, "-> ReadPosition = " + readPosition.toJson());
     }
 
     /*
