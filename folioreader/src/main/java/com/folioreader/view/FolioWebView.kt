@@ -270,7 +270,8 @@ class FolioWebView : WebView {
         }
         viewTextSelection.shareSelection.setOnClickListener {
             dismissPopupWindow()
-            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
+//            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
+            Toast.makeText(context, "yahoooo", Toast.LENGTH_LONG).show()
         }
         viewTextSelection.defineSelection.setOnClickListener {
             dismissPopupWindow()
