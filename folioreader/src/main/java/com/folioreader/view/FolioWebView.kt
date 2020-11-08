@@ -1,10 +1,13 @@
 package com.folioreader.view
 
 import android.app.AlertDialog
+import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +15,7 @@ import android.os.Looper
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GestureDetectorCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
@@ -29,16 +33,22 @@ import com.folioreader.R
 import com.folioreader.model.HighLight
 import com.folioreader.model.HighlightImpl.HighlightStyle
 import com.folioreader.model.sqlite.HighLightTable
+import com.folioreader.ui.folio.DialogPublic.ShareImageQuotesDialog
 import com.folioreader.ui.folio.activity.FolioActivity
 import com.folioreader.ui.folio.activity.FolioActivityCallback
 import com.folioreader.ui.folio.fragment.DictionaryFragment
 import com.folioreader.ui.folio.fragment.FolioPageFragment
 import com.folioreader.util.AppUtil
 import com.folioreader.util.HighlightUtil
+import com.folioreader.util.KUtils.selectTab
 import com.folioreader.util.UiUtil
+import com.theartofdev.edmodo.cropper.CropImage
 import dalvik.system.PathClassLoader
 import kotlinx.android.synthetic.main.text_selection.view.*
 import org.springframework.util.ReflectionUtils
+import pl.aprilapps.easyphotopicker.DefaultCallback
+import pl.aprilapps.easyphotopicker.EasyImage
+import java.io.File
 import java.lang.ref.WeakReference
 
 /**
@@ -89,6 +99,7 @@ class FolioWebView : WebView {
     private lateinit var uiHandler: Handler
     private lateinit var folioActivityCallback: FolioActivityCallback
     private lateinit var parentFragment: FolioPageFragment
+
     private var actionMode: ActionMode? = null
     private var textSelectionCb: TextSelectionCb? = null
     private var textSelectionCb2: TextSelectionCb2? = null
@@ -128,7 +139,6 @@ class FolioWebView : WebView {
         return popupWindow.isShowing
     }
 
-    fun webViewPagerInti() = ::webViewPager.isInitialized
     private inner class HorizontalGestureListener : GestureDetector.SimpleOnGestureListener() {
 
         override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
@@ -140,16 +150,14 @@ class FolioWebView : WebView {
         override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             //Log.d(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
 
-            if (webViewPagerInti()) {
-                if (!webViewPager.isScrolling) {
-                    // Need to complete the scroll as ViewPager thinks these touch events should not
-                    // scroll it's pages.
-                    //Log.d(LOG_TAG, "-> onFling -> completing scroll");
-                    uiHandler.postDelayed({
-                        // Delayed to avoid inconsistency of scrolling in WebView
-                        scrollTo(getScrollXPixelsForPage(webViewPager!!.currentItem), 0)
-                    }, 100)
-                }
+            if (!webViewPager.isScrolling) {
+                // Need to complete the scroll as ViewPager thinks these touch events should not
+                // scroll it's pages.
+                //Log.d(LOG_TAG, "-> onFling -> completing scroll");
+                uiHandler.postDelayed({
+                    // Delayed to avoid inconsistency of scrolling in WebView
+                    scrollTo(getScrollXPixelsForPage(webViewPager!!.currentItem), 0)
+                }, 100)
             }
 
             lastScrollType = LastScrollType.USER
@@ -295,6 +303,7 @@ class FolioWebView : WebView {
             R.id.shareSelection -> {
                 Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> shareSelection -> $selectedText")
                 shareQuote(selectedText)
+//                UiUtil.share(context, selectedText)
             }
             R.id.defineSelection -> {
                 Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> defineSelection -> $selectedText")
@@ -392,7 +401,6 @@ class FolioWebView : WebView {
     private fun computeHorizontalScroll(event: MotionEvent): Boolean {
         //Log.v(LOG_TAG, "-> computeHorizontalScroll");
 
-        if (webViewPagerInti())
         webViewPager.dispatchTouchEvent(event)
         val gestureReturn = gestureDetector.onTouchEvent(event)
         return if (gestureReturn) true else super.onTouchEvent(event)
@@ -410,7 +418,6 @@ class FolioWebView : WebView {
 
     fun setHorizontalPageCount(horizontalPageCount: Int) {
         this.horizontalPageCount = horizontalPageCount
-
 
         uiHandler.post {
             webViewPager = (parent as View).findViewById(R.id.webViewPager)
@@ -761,22 +768,29 @@ class FolioWebView : WebView {
             uiHandler.postDelayed(isScrollingRunnable, IS_SCROLLING_CHECK_TIMER.toLong())
     }
 
-
-    private fun shareQuote(selectedText: String?) {
-        val items: Array<CharSequence> = arrayOf<CharSequence>("Share image quote", "Share text quote",context.getText(R.string.cancel))
+     fun shareQuote(selectedText: String?) {
+        val items: Array<CharSequence> = arrayOf<CharSequence>("Share image quote", "Share text quote", "Cancel")
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.setTitle("Select any one")
         builder.setItems(items) { _, item ->
             if (items[item] == "Share image quote") {
+                val dialog = selectedText?.let { ShareImageQuotesDialog(it) }
+                dialog?.show((context as AppCompatActivity).supportFragmentManager, null)
             }
             if (items[item] == "Share text quote") {
 
                 UiUtil.share(context, selectedText)
+            }else {
+                selectTab?.postValue("cancel")
             }
         }
         val alert: AlertDialog = builder.create()
         alert.show()
         alert.setCanceledOnTouchOutside(true)
     }
+
+
+
+
 }

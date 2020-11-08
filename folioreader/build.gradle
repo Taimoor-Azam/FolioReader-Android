@@ -111,5 +111,12 @@ dependencies {
 
     // To use only ReflectionUtils in Spring framework
     implementation 'org.springframework:spring-core:4.3.19.RELEASE'
+
+    implementation 'me.grantland:autofittextview:0.2.1'
+
+    //ImageTaker
+    implementation 'com.github.jkwiecien:EasyImage:2.0.4'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
+
 }
 apply from: '../folioreader/bintray/bintrayv1.gradle'

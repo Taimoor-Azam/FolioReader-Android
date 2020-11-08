@@ -60,14 +60,19 @@ import com.folioreader.view.FolioWebView;
 import com.folioreader.view.LoadingView;
 import com.folioreader.view.VerticalSeekbar;
 import com.folioreader.view.WebViewPager;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.readium.r2.shared.Link;
 
+import java.io.File;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 /**
  * Created by mahavir on 4/2/16.
@@ -956,4 +961,6 @@ public class FolioPageFragment
         mWebview.loadUrl(getString(R.string.reset_search_results));
         searchItemVisible = null;
     }
+
+
 }

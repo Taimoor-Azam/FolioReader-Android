@@ -72,6 +72,7 @@ import com.folioreader.view.ConfigBottomSheetDialogFragment;
 import com.folioreader.view.DirectionalViewpager;
 import com.folioreader.view.FolioAppBarLayout;
 import com.folioreader.view.MediaControllerCallback;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.readium.r2.shared.Link;
@@ -81,9 +82,12 @@ import org.readium.r2.streamer.parser.EpubParser;
 import org.readium.r2.streamer.parser.PubBox;
 import org.readium.r2.streamer.server.Server;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 import static com.folioreader.Constants.CHAPTER_SELECTED;
 import static com.folioreader.Constants.HIGHLIGHT_SELECTED;
@@ -766,6 +770,26 @@ public class FolioActivity
                 folioPageFragment.scrollToHighlightId(highlightImpl.getRangy());
             }
         }
+
+
+        EasyImage.handleActivityResult(requestCode, resultCode, data, FolioActivity.this, new EasyImage.Callbacks() {
+            @Override
+            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+
+            }
+
+            @Override
+            public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
+                CropImage.activity(Uri.fromFile(imageFiles.get(0)))
+                        .setAspectRatio(1, 1)
+                        .start(FolioActivity.this);
+            }
+
+            @Override
+            public void onCanceled(EasyImage.ImageSource source, int type) {
+
+            }
+        });
     }
 
     @Override
@@ -1085,6 +1109,8 @@ public class FolioActivity
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
     }
+
+
 
 
 }
