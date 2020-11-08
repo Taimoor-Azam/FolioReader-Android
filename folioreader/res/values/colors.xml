@@ -29,4 +29,11 @@
     <color name="highlight_blue">#ADD8FF</color>
     <color name="highlight_pink">#FFB0CA</color>
 
+    <color name="orange">#FA7B67</color>
+    <color name="light_blue">#78CAB6</color>
+    <color name="green">#71B630</color>
+    <color name="gray">#959D92</color>
+    <color name="darkgreen">#4D5B49</color>
+
+
 </resources>

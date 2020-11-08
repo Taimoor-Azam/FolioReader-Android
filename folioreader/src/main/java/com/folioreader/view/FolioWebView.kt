@@ -1,5 +1,6 @@
 package com.folioreader.view
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
@@ -88,7 +89,6 @@ class FolioWebView : WebView {
     private lateinit var uiHandler: Handler
     private lateinit var folioActivityCallback: FolioActivityCallback
     private lateinit var parentFragment: FolioPageFragment
-
     private var actionMode: ActionMode? = null
     private var textSelectionCb: TextSelectionCb? = null
     private var textSelectionCb2: TextSelectionCb2? = null
@@ -273,8 +273,7 @@ class FolioWebView : WebView {
         }
         viewTextSelection.shareSelection.setOnClickListener {
             dismissPopupWindow()
-//            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
-            Toast.makeText(context, "yahoooo", Toast.LENGTH_LONG).show()
+            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
         }
         viewTextSelection.defineSelection.setOnClickListener {
             dismissPopupWindow()
@@ -295,7 +294,7 @@ class FolioWebView : WebView {
             }
             R.id.shareSelection -> {
                 Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> shareSelection -> $selectedText")
-                UiUtil.share(context, selectedText)
+                shareQuote(selectedText)
             }
             R.id.defineSelection -> {
                 Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> defineSelection -> $selectedText")
@@ -393,6 +392,7 @@ class FolioWebView : WebView {
     private fun computeHorizontalScroll(event: MotionEvent): Boolean {
         //Log.v(LOG_TAG, "-> computeHorizontalScroll");
 
+        if (webViewPagerInti())
         webViewPager.dispatchTouchEvent(event)
         val gestureReturn = gestureDetector.onTouchEvent(event)
         return if (gestureReturn) true else super.onTouchEvent(event)
@@ -410,6 +410,7 @@ class FolioWebView : WebView {
 
     fun setHorizontalPageCount(horizontalPageCount: Int) {
         this.horizontalPageCount = horizontalPageCount
+
 
         uiHandler.post {
             webViewPager = (parent as View).findViewById(R.id.webViewPager)
@@ -758,5 +759,25 @@ class FolioWebView : WebView {
         isScrollingCheckDuration = 0
         if (!destroyed)
             uiHandler.postDelayed(isScrollingRunnable, IS_SCROLLING_CHECK_TIMER.toLong())
+    }
+
+
+    private fun shareQuote(selectedText: String?) {
+        val items: Array<CharSequence> = arrayOf<CharSequence>("Share image quote", "Share text quote",context.getText(R.string.cancel))
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setTitle("Select any one")
+        builder.setItems(items) { _, item ->
+            if (items[item] == "Share image quote") {
+                quoteType = "image"
+            }
+            if (items[item] == "Share text quote") {
+                quoteType = "text"
+                UiUtil.share(context, selectedText)
+            }
+        }
+        val alert: AlertDialog = builder.create()
+        alert.show()
+        alert.setCanceledOnTouchOutside(true)
     }
 }
