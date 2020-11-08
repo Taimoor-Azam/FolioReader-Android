@@ -769,10 +769,9 @@ class FolioWebView : WebView {
         builder.setTitle("Select any one")
         builder.setItems(items) { _, item ->
             if (items[item] == "Share image quote") {
-                quoteType = "image"
             }
             if (items[item] == "Share text quote") {
-                quoteType = "text"
+
                 UiUtil.share(context, selectedText)
             }
         }
