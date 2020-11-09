@@ -1,13 +1,11 @@
 package com.folioreader.view
 
 import android.app.AlertDialog
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -33,22 +31,21 @@ import com.folioreader.R
 import com.folioreader.model.HighLight
 import com.folioreader.model.HighlightImpl.HighlightStyle
 import com.folioreader.model.sqlite.HighLightTable
+import com.folioreader.ui.folio.DialogPublic.ImageQuotesDialog
 import com.folioreader.ui.folio.DialogPublic.ShareImageQuotesDialog
 import com.folioreader.ui.folio.activity.FolioActivity
 import com.folioreader.ui.folio.activity.FolioActivityCallback
 import com.folioreader.ui.folio.fragment.DictionaryFragment
 import com.folioreader.ui.folio.fragment.FolioPageFragment
 import com.folioreader.util.AppUtil
+import com.folioreader.util.FileUtil
 import com.folioreader.util.HighlightUtil
 import com.folioreader.util.KUtils.selectTab
 import com.folioreader.util.UiUtil
-import com.theartofdev.edmodo.cropper.CropImage
 import dalvik.system.PathClassLoader
 import kotlinx.android.synthetic.main.text_selection.view.*
+import org.readium.r2.streamer.parser.PubBox
 import org.springframework.util.ReflectionUtils
-import pl.aprilapps.easyphotopicker.DefaultCallback
-import pl.aprilapps.easyphotopicker.EasyImage
-import java.io.File
 import java.lang.ref.WeakReference
 
 /**
@@ -134,6 +131,8 @@ class FolioWebView : WebView {
         }
     }
 
+    fun webViewPagerInti() = ::webViewPager.isInitialized
+
     @JavascriptInterface
     fun isPopupShowing(): Boolean {
         return popupWindow.isShowing
@@ -149,15 +148,16 @@ class FolioWebView : WebView {
 
         override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             //Log.d(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
-
-            if (!webViewPager.isScrolling) {
-                // Need to complete the scroll as ViewPager thinks these touch events should not
-                // scroll it's pages.
-                //Log.d(LOG_TAG, "-> onFling -> completing scroll");
-                uiHandler.postDelayed({
-                    // Delayed to avoid inconsistency of scrolling in WebView
-                    scrollTo(getScrollXPixelsForPage(webViewPager!!.currentItem), 0)
-                }, 100)
+            if (webViewPagerInti()) {
+                if (!webViewPager.isScrolling) {
+                    // Need to complete the scroll as ViewPager thinks these touch events should not
+                    // scroll it's pages.
+                    //Log.d(LOG_TAG, "-> onFling -> completing scroll");
+                    uiHandler.postDelayed({
+                        // Delayed to avoid inconsistency of scrolling in WebView
+                        scrollTo(getScrollXPixelsForPage(webViewPager!!.currentItem), 0)
+                    }, 100)
+                }
             }
 
             lastScrollType = LastScrollType.USER
@@ -178,6 +178,7 @@ class FolioWebView : WebView {
         Log.d(LOG_TAG, "-> dismissPopupWindow -> " + parentFragment.spineItem.href)
         val wasShowing = popupWindow.isShowing
         if (Looper.getMainLooper().thread == Thread.currentThread()) {
+            if (!wasShowing)
             popupWindow.dismiss()
         } else {
             uiHandler.post { popupWindow.dismiss() }
@@ -326,6 +327,10 @@ class FolioWebView : WebView {
     private fun onHighlightColorItemsClicked(style: HighlightStyle, isAlreadyCreated: Boolean) {
         parentFragment.highlight(style, isAlreadyCreated)
         dismissPopupWindow()
+    }
+
+private fun onHighlightColorClicked(style: HighlightStyle, isAlreadyCreated: Boolean) {
+        parentFragment.highlight(style, isAlreadyCreated)
     }
 
     @JavascriptInterface
@@ -752,6 +757,7 @@ class FolioWebView : WebView {
                 popupWindow.isClippingEnabled = false
                 popupWindow.showAtLocation(this@FolioWebView, Gravity.NO_GRAVITY,
                         popupRect.left, popupRect.top)
+                onHighlightColorClicked(HighlightStyle.Yellow, false)
             } else {
                 Log.i(LOG_TAG, "-> Still scrolling, don't show Popup")
                 oldScrollX = currentScrollX
@@ -768,20 +774,23 @@ class FolioWebView : WebView {
             uiHandler.postDelayed(isScrollingRunnable, IS_SCROLLING_CHECK_TIMER.toLong())
     }
 
-     fun shareQuote(selectedText: String?) {
+    fun shareQuote(selectedText: String?) {
         val items: Array<CharSequence> = arrayOf<CharSequence>("Share image quote", "Share text quote", "Cancel")
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.setTitle("Select any one")
         builder.setItems(items) { _, item ->
             if (items[item] == "Share image quote") {
-                val dialog = selectedText?.let { ShareImageQuotesDialog(it) }
-                dialog?.show((context as AppCompatActivity).supportFragmentManager, null)
+//                val dialog = selectedText?.let { ShareImageQuotesDialog(it, FileUtil.mBookFileAuthor) }
+//                dialog?.show((context as AppCompatActivity).supportFragmentManager, null)
+
+                val intent = Intent(context, ImageQuotesDialog::class.java)
+                intent.putExtra("selectedTxtKey", selectedText)
+                ContextCompat.startActivity(context, intent, null)
             }
             if (items[item] == "Share text quote") {
-
                 UiUtil.share(context, selectedText)
-            }else {
+            } else {
                 selectTab?.postValue("cancel")
             }
         }
@@ -789,8 +798,6 @@ class FolioWebView : WebView {
         alert.show()
         alert.setCanceledOnTouchOutside(true)
     }
-
-
 
 
 }

@@ -67,12 +67,12 @@ import com.folioreader.ui.folio.fragment.FolioPageFragment;
 import com.folioreader.ui.folio.fragment.MediaControllerFragment;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.FileUtil;
+import com.folioreader.util.KUtils;
 import com.folioreader.util.UiUtil;
 import com.folioreader.view.ConfigBottomSheetDialogFragment;
 import com.folioreader.view.DirectionalViewpager;
 import com.folioreader.view.FolioAppBarLayout;
 import com.folioreader.view.MediaControllerCallback;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.readium.r2.shared.Link;
@@ -87,7 +87,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.aprilapps.easyphotopicker.EasyImage;
+
 
 import static com.folioreader.Constants.CHAPTER_SELECTED;
 import static com.folioreader.Constants.HIGHLIGHT_SELECTED;
@@ -116,6 +116,7 @@ public class FolioActivity
     }
 
     private String bookFileName;
+    private String bookFileAuthor = "";
     private static final String HIGHLIGHT_ITEM = "highlight_item";
 
     private DirectionalViewpager mFolioPageViewPager;
@@ -472,6 +473,10 @@ public class FolioActivity
         r2StreamerServer.start();
         r2StreamerServer.addEpub(pubBox.getPublication(), pubBox.getContainer(),
                 "/" + bookFileName, null);
+        if (pubBox.getPublication().getMetadata().getAuthors().size() > 0) {
+            bookFileAuthor = pubBox.getPublication().getMetadata().getAuthors().get(0).getMultilanguageName().getSingleString();
+            FileUtil.mBookFileAuthor = bookFileAuthor;
+        }
     }
 
     public void onBookInitFailure() {
@@ -521,7 +526,7 @@ public class FolioActivity
 
         mFolioPageViewPager.setDirection(newDirection);
         mFolioPageFragmentAdapter = new FolioPageFragmentAdapter(getSupportFragmentManager(),
-                spine, bookFileName, mBookId);
+                spine, bookFileName,bookFileAuthor, mBookId);
         mFolioPageViewPager.setAdapter(mFolioPageFragmentAdapter);
         mFolioPageViewPager.setCurrentItem(currentChapterIndex);
 
@@ -771,25 +776,11 @@ public class FolioActivity
             }
         }
 
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
 
-        EasyImage.handleActivityResult(requestCode, resultCode, data, FolioActivity.this, new EasyImage.Callbacks() {
-            @Override
-            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
 
-            }
-
-            @Override
-            public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
-                CropImage.activity(Uri.fromFile(imageFiles.get(0)))
-                        .setAspectRatio(1, 1)
-                        .start(FolioActivity.this);
-            }
-
-            @Override
-            public void onCanceled(EasyImage.ImageSource source, int type) {
-
-            }
-        });
     }
 
     @Override
@@ -864,7 +855,7 @@ public class FolioActivity
 
         mFolioPageViewPager.setDirection(direction);
         mFolioPageFragmentAdapter = new FolioPageFragmentAdapter(getSupportFragmentManager(),
-                spine, bookFileName, mBookId);
+                spine, bookFileName,bookFileAuthor, mBookId);
         mFolioPageViewPager.setAdapter(mFolioPageFragmentAdapter);
 
         // In case if SearchActivity is recreated due to screen rotation then FolioActivity
@@ -1109,8 +1100,6 @@ public class FolioActivity
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
     }
-
-
 
 
 }

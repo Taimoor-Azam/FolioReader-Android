@@ -7,10 +7,16 @@
 	    android:layout_height="fill_parent"
 	    android:orientation="vertical"
 	    android:gravity="center">
+<!--		<ProgressBar android:id="@+id/loading"-->
+<!--	        android:layout_width="wrap_content"-->
+<!--	        android:layout_height="wrap_content"-->
+<!--	        style="?android:attr/android:progressBarStyle"/>-->
+
 		<ProgressBar android:id="@+id/loading"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        style="?android:attr/android:progressBarStyle"/>
+			style="?android:attr/progressBarStyle"/>
+
 		<TextView android:id="@+id/label_loading"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"

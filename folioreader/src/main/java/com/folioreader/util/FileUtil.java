@@ -1,5 +1,6 @@
 package com.folioreader.util;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -23,7 +24,8 @@ import java.io.OutputStream;
 public class FileUtil {
     private static final String TAG = FileUtil.class.getSimpleName();
     private static final String FOLIO_READER_ROOT = "folioreader";
-
+     public static String mBookFileAuthor= "";
+    public static  MutableLiveData<String> selectImageTab = new MutableLiveData();
     public static String saveEpubFileAndLoadLazyBook(final Context context,
                                                      FolioActivity.EpubSourceType epubSourceType,
                                                      String epubFilePath,

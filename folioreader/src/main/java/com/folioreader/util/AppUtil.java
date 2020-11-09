@@ -34,6 +34,7 @@ public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();
     private static final String FOLIO_READER_ROOT = "folioreader";
 
+
     private enum FileType {
         OPS,
         OEBPS,

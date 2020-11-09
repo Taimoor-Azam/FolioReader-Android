@@ -24,15 +24,17 @@ public class FolioPageFragmentAdapter extends FragmentStatePagerAdapter {
     private static final String LOG_TAG = FolioPageFragmentAdapter.class.getSimpleName();
     private List<Link> mSpineReferences;
     private String mEpubFileName;
+    private String mEpubFileAuthor;
     private String mBookId;
     private ArrayList<Fragment> fragments;
     private ArrayList<Fragment.SavedState> savedStateList;
 
     public FolioPageFragmentAdapter(FragmentManager fragmentManager, List<Link> spineReferences,
-                                    String epubFileName, String bookId) {
+                                    String epubFileName,String epubFileAuthor, String bookId) {
         super(fragmentManager);
         this.mSpineReferences = spineReferences;
         this.mEpubFileName = epubFileName;
+        this.mEpubFileAuthor = epubFileAuthor;
         this.mBookId = bookId;
         fragments = new ArrayList<>(Arrays.asList(new Fragment[mSpineReferences.size()]));
     }
@@ -60,7 +62,7 @@ public class FolioPageFragmentAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = fragments.get(position);
         if (fragment == null) {
             fragment = FolioPageFragment.newInstance(position,
-                    mEpubFileName, mSpineReferences.get(position), mBookId);
+                    mEpubFileName,mEpubFileAuthor, mSpineReferences.get(position), mBookId);
             fragments.set(position, fragment);
         }
         return fragment;

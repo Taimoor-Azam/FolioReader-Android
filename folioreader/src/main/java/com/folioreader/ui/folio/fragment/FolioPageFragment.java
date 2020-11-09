@@ -2,6 +2,7 @@ package com.folioreader.ui.folio.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,17 +52,19 @@ import com.folioreader.model.sqlite.HighLightTable;
 import com.folioreader.ui.base.HtmlTask;
 import com.folioreader.ui.base.HtmlTaskCallback;
 import com.folioreader.ui.base.HtmlUtil;
+import com.folioreader.ui.folio.DialogPublic.ShareImageQuotesDialog;
+import com.folioreader.ui.folio.activity.FolioActivity;
 import com.folioreader.ui.folio.activity.FolioActivityCallback;
 import com.folioreader.ui.folio.mediaoverlay.MediaController;
 import com.folioreader.ui.folio.mediaoverlay.MediaControllerCallbacks;
 import com.folioreader.util.AppUtil;
+import com.folioreader.util.FileUtil;
 import com.folioreader.util.HighlightUtil;
 import com.folioreader.util.UiUtil;
 import com.folioreader.view.FolioWebView;
 import com.folioreader.view.LoadingView;
 import com.folioreader.view.VerticalSeekbar;
 import com.folioreader.view.WebViewPager;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,11 +72,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.readium.r2.shared.Link;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
-import pl.aprilapps.easyphotopicker.EasyImage;
+
 
 /**
  * Created by mahavir on 4/2/16.
@@ -85,6 +91,7 @@ public class FolioPageFragment
     public static final String LOG_TAG = FolioPageFragment.class.getSimpleName();
     public static final String KEY_FRAGMENT_FOLIO_POSITION = "com.folioreader.ui.folio.fragment.FolioPageFragment.POSITION";
     public static final String KEY_FRAGMENT_FOLIO_BOOK_TITLE = "com.folioreader.ui.folio.fragment.FolioPageFragment.BOOK_TITLE";
+    public static final String KEY_FRAGMENT_FOLIO_BOOK_AUTHOR = "com.folioreader.ui.folio.fragment.FolioPageFragment.BOOK_AUTHOR";
     public static final String KEY_FRAGMENT_EPUB_FILE_NAME = "com.folioreader.ui.folio.fragment.FolioPageFragment.EPUB_FILE_NAME";
     private static final String KEY_IS_SMIL_AVAILABLE = "com.folioreader.ui.folio.fragment.FolioPageFragment.IS_SMIL_AVAILABLE";
     private static final String BUNDLE_READ_POSITION_CONFIG_CHANGE = "BUNDLE_READ_POSITION_CONFIG_CHANGE";
@@ -142,11 +149,12 @@ public class FolioPageFragment
     private String mBookId;
     public SearchItem searchItemVisible;
 
-    public static FolioPageFragment newInstance(int position, String bookTitle, Link spineRef, String bookId) {
+    public static FolioPageFragment newInstance(int position, String bookTitle, String bookAuthor, Link spineRef, String bookId) {
         FolioPageFragment fragment = new FolioPageFragment();
         Bundle args = new Bundle();
         args.putInt(KEY_FRAGMENT_FOLIO_POSITION, position);
         args.putString(KEY_FRAGMENT_FOLIO_BOOK_TITLE, bookTitle);
+        args.putString(KEY_FRAGMENT_FOLIO_BOOK_AUTHOR, bookAuthor);
         args.putString(FolioReader.INTENT_BOOK_ID, bookId);
         args.putSerializable(SPINE_ITEM, spineRef);
         fragment.setArguments(args);
@@ -961,6 +969,7 @@ public class FolioPageFragment
         mWebview.loadUrl(getString(R.string.reset_search_results));
         searchItemVisible = null;
     }
+
 
 
 }
