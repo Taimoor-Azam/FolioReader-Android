@@ -79,7 +79,6 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 
-
 /**
  * Created by mahavir on 4/2/16.
  */
@@ -364,6 +363,10 @@ public class FolioPageFragment
                 mimeType = getString(R.string.xhtml_mime_type);
             } else {
                 mimeType = getString(R.string.html_mime_type);
+            }
+
+            if (FileUtil.language.equals("ar")) {
+                mHtmlString = mHtmlString.replace("<body>", "<body dir='rtl'>");
             }
 
             mWebview.loadDataWithBaseURL(
@@ -969,7 +972,6 @@ public class FolioPageFragment
         mWebview.loadUrl(getString(R.string.reset_search_results));
         searchItemVisible = null;
     }
-
 
 
 }

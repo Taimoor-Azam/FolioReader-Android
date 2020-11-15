@@ -15,6 +15,8 @@
  */
 package com.folioreader.android.sample;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -38,8 +40,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity
         implements OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener {
@@ -69,7 +73,7 @@ public class HomeActivity extends AppCompatActivity
                 config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
 
                 folioReader.setConfig(config, true)
-                        .openBook(R.raw.adventures);
+                        .openBook(R.raw.aashir);
             }
         });
 
@@ -86,7 +90,7 @@ public class HomeActivity extends AppCompatActivity
 
                 folioReader.setReadPosition(readPosition)
                         .setConfig(config, true)
-                        .openBook("file:///android_asset/TheSilverChair.epub");
+                        .openBook("file:///android_asset/TheSilverChair.epub","en","");
             }
         });
     }
@@ -183,4 +187,6 @@ public class HomeActivity extends AppCompatActivity
     public void onFolioReaderClosed() {
         Log.v(LOG_TAG, "-> onFolioReaderClosed");
     }
+
+
 }

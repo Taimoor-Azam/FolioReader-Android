@@ -88,7 +88,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 import static com.folioreader.Constants.CHAPTER_SELECTED;
 import static com.folioreader.Constants.HIGHLIGHT_SELECTED;
 import static com.folioreader.Constants.SELECTED_CHAPTER_POSITION;
@@ -475,7 +474,12 @@ public class FolioActivity
                 "/" + bookFileName, null);
         if (pubBox.getPublication().getMetadata().getAuthors().size() > 0) {
             bookFileAuthor = pubBox.getPublication().getMetadata().getAuthors().get(0).getMultilanguageName().getSingleString();
-            FileUtil.mBookFileAuthor = bookFileAuthor;
+            if (!FileUtil.mBookFileAuthor.equals("")) {
+                FileUtil.mBookFileAuthor = bookFileAuthor;
+            }
+            if (!FileUtil.language.equals("")) {
+                FileUtil.language = pubBox.getPublication().getMetadata().getLanguages().get(0);
+            }
         }
     }
 
@@ -526,7 +530,7 @@ public class FolioActivity
 
         mFolioPageViewPager.setDirection(newDirection);
         mFolioPageFragmentAdapter = new FolioPageFragmentAdapter(getSupportFragmentManager(),
-                spine, bookFileName,bookFileAuthor, mBookId);
+                spine, bookFileName, bookFileAuthor, mBookId);
         mFolioPageViewPager.setAdapter(mFolioPageFragmentAdapter);
         mFolioPageViewPager.setCurrentItem(currentChapterIndex);
 
@@ -855,7 +859,7 @@ public class FolioActivity
 
         mFolioPageViewPager.setDirection(direction);
         mFolioPageFragmentAdapter = new FolioPageFragmentAdapter(getSupportFragmentManager(),
-                spine, bookFileName,bookFileAuthor, mBookId);
+                spine, bookFileName, bookFileAuthor, mBookId);
         mFolioPageViewPager.setAdapter(mFolioPageFragmentAdapter);
 
         // In case if SearchActivity is recreated due to screen rotation then FolioActivity

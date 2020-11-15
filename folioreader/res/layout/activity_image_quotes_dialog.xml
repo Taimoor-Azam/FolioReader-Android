@@ -120,6 +120,8 @@
                 android:id="@+id/orangeColor"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="@color/orange"
                 app:cardCornerRadius="6dp" />
@@ -130,6 +132,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 app:cardBackgroundColor="@color/green"
                 app:cardCornerRadius="6dp" />
 
@@ -137,6 +141,8 @@
                 android:id="@+id/blueColor"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="@color/light_blue"
                 app:cardCornerRadius="6dp" />
@@ -147,6 +153,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 app:cardBackgroundColor="@color/gray"
                 app:cardCornerRadius="6dp" />
 
@@ -156,6 +164,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 app:cardBackgroundColor="@color/darkgreen"
                 app:cardCornerRadius="6dp" />
 
@@ -165,6 +175,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 app:cardCornerRadius="6dp">
 
                 <RelativeLayout
@@ -179,6 +191,8 @@
 
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="6dp">
 

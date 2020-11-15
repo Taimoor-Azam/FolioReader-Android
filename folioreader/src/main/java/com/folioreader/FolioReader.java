@@ -14,6 +14,7 @@ import com.folioreader.model.sqlite.DbAdapter;
 import com.folioreader.ui.base.OnSaveHighlight;
 import com.folioreader.ui.base.SaveReceivedHighlightTask;
 import com.folioreader.ui.folio.activity.FolioActivity;
+import com.folioreader.util.FileUtil;
 import com.folioreader.util.OnHighlightListener;
 import com.folioreader.util.ReadPositionListener;
 
@@ -112,7 +113,9 @@ public class FolioReader {
                 new IntentFilter(ACTION_FOLIOREADER_CLOSED));
     }
 
-    public FolioReader openBook(String assetOrSdcardPath) {
+    public FolioReader openBook(String assetOrSdcardPath,String language, String author) {
+        FileUtil.language = language;
+        FileUtil.mBookFileAuthor = author;
         Intent intent = getIntentFromUrl(assetOrSdcardPath, 0);
         context.startActivity(intent);
         return singleton;
