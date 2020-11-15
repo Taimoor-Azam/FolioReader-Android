@@ -86,7 +86,7 @@ public class HomeActivity extends AppCompatActivity
                 Config config = AppUtil.getSavedConfig(getApplicationContext());
                 if (config == null)
                     config = new Config();
-                config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
+                config.setAllowedDirection(Config.AllowedDirection.ONLY_HORIZONTAL);
 
                 folioReader.setReadPosition(readPosition)
                         .setConfig(config, true)

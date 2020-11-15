@@ -424,6 +424,12 @@ public class FolioPageFragment
         mWebview = webViewLayout.findViewById(R.id.folioWebView);
         mWebview.setParentFragment(this);
         webViewPager = webViewLayout.findViewById(R.id.webViewPager);
+        if (FileUtil.language.equals("ar")) {
+            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }else {
+            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+        }
 
         if (getActivity() instanceof FolioActivityCallback)
             mWebview.setFolioActivityCallback((FolioActivityCallback) getActivity());

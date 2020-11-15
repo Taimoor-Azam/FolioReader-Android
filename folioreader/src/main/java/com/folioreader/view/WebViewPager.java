@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -242,6 +243,14 @@ public class WebViewPager extends ViewPager {
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
+        }
+    }
+
+    public void setLayoutDirection(int layoutDirection) {
+        if (layoutDirection == 0) {
+            setRotationY(0);
+        } else if (layoutDirection == 1) {
+            setRotationY(180);
         }
     }
 }
