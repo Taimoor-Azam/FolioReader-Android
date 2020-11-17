@@ -19,6 +19,7 @@ import android.webkit.JavascriptInterface;
 
 import com.folioreader.R;
 
+
 public class WebViewPager extends ViewPager {
 
     private static final String LOG_TAG = WebViewPager.class.getSimpleName();
@@ -28,6 +29,7 @@ public class WebViewPager extends ViewPager {
     private boolean scrolling;
     private Handler handler;
     private GestureDetectorCompat gestureDetector;
+
 
     private enum LastGestureType {
         OnSingleTapUp, OnLongPress, OnFling, OnScroll

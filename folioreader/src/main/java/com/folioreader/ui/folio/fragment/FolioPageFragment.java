@@ -196,6 +196,11 @@ public class FolioPageFragment
         mPagesLeftTextView = (TextView) mRootView.findViewById(R.id.pagesLeft);
         mMinutesLeftTextView = (TextView) mRootView.findViewById(R.id.minutesLeft);
 
+        FrameLayout webViewLayout = mRootView.findViewById(R.id.webViewLayout);
+        mWebview = webViewLayout.findViewById(R.id.folioWebView);
+        mWebview.setParentFragment(this);
+        webViewPager = webViewLayout.findViewById(R.id.webViewPager);
+
         mConfig = AppUtil.getSavedConfig(getContext());
 
         loadingView = mRootView.findViewById(R.id.loadingView);
@@ -420,15 +425,11 @@ public class FolioPageFragment
 
     private void initWebView() {
 
-        FrameLayout webViewLayout = mRootView.findViewById(R.id.webViewLayout);
-        mWebview = webViewLayout.findViewById(R.id.folioWebView);
-        mWebview.setParentFragment(this);
-        webViewPager = webViewLayout.findViewById(R.id.webViewPager);
-        if (FileUtil.language.equals("ar")) {
-            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        }else {
-            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
+        if (FileUtil.language.equals("ar")) {
+            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }else {
+            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
 
         if (getActivity() instanceof FolioActivityCallback)
@@ -464,7 +465,6 @@ public class FolioPageFragment
         mWebview.setScrollListener(new FolioWebView.ScrollListener() {
             @Override
             public void onScrollChange(int percent) {
-
                 mScrollSeekbar.setProgressAndThumb(percent);
                 updatePagesLeftText(percent);
             }
