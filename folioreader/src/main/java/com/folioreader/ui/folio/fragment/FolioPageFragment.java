@@ -370,9 +370,9 @@ public class FolioPageFragment
                 mimeType = getString(R.string.html_mime_type);
             }
 
-            if (FileUtil.language.equals("ar")) {
-                mHtmlString = mHtmlString.replace("<body>", "<body dir='rtl'>");
-            }
+//            if (FileUtil.language.equals("ar")) {
+//                mHtmlString = mHtmlString.replace("<body>", "<body dir='rtl'>");
+//            }
 
             mWebview.loadDataWithBaseURL(
                     Constants.LOCALHOST + mBookTitle + path,
