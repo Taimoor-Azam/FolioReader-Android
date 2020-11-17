@@ -365,9 +365,9 @@ public class FolioPageFragment
                 mimeType = getString(R.string.html_mime_type);
             }
 
-//            if (FileUtil.language.equals("ar")) {
-//                mHtmlString = mHtmlString.replace("<body>", "<body dir='rtl'>");
-//            }
+            if (FileUtil.language.contains("ar")) {
+                mHtmlString = mHtmlString.replace("<body>", "<body dir='rtl'>");
+            }
 
             mWebview.loadDataWithBaseURL(
                     Constants.LOCALHOST + mBookTitle + path,
@@ -425,9 +425,9 @@ public class FolioPageFragment
         mWebview.setParentFragment(this);
         webViewPager = webViewLayout.findViewById(R.id.webViewPager);
 
-        if (FileUtil.language.equals("ar")) {
+        if (FileUtil.language.contains("ar")) {
             webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        }else {
+        } else {
             webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
 
