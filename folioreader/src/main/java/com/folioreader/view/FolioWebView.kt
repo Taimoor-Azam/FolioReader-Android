@@ -179,7 +179,7 @@ class FolioWebView : WebView {
         val wasShowing = popupWindow.isShowing
         if (Looper.getMainLooper().thread == Thread.currentThread()) {
             if (!wasShowing)
-            popupWindow.dismiss()
+                popupWindow.dismiss()
         } else {
             uiHandler.post { popupWindow.dismiss() }
         }
@@ -329,7 +329,7 @@ class FolioWebView : WebView {
         dismissPopupWindow()
     }
 
-private fun onHighlightColorClicked(style: HighlightStyle, isAlreadyCreated: Boolean) {
+    private fun onHighlightColorClicked(style: HighlightStyle, isAlreadyCreated: Boolean) {
         parentFragment.highlight(style, isAlreadyCreated)
     }
 
@@ -405,10 +405,11 @@ private fun onHighlightColorClicked(style: HighlightStyle, isAlreadyCreated: Boo
 
     private fun computeHorizontalScroll(event: MotionEvent): Boolean {
         //Log.v(LOG_TAG, "-> computeHorizontalScroll");
-
-        webViewPager.dispatchTouchEvent(event)
+        if (webViewPagerInti())
+            webViewPager.dispatchTouchEvent(event)
         val gestureReturn = gestureDetector.onTouchEvent(event)
         return if (gestureReturn) true else super.onTouchEvent(event)
+
     }
 
     fun getScrollXDpForPage(page: Int): Int {

@@ -196,11 +196,6 @@ public class FolioPageFragment
         mPagesLeftTextView = (TextView) mRootView.findViewById(R.id.pagesLeft);
         mMinutesLeftTextView = (TextView) mRootView.findViewById(R.id.minutesLeft);
 
-        FrameLayout webViewLayout = mRootView.findViewById(R.id.webViewLayout);
-        mWebview = webViewLayout.findViewById(R.id.folioWebView);
-        mWebview.setParentFragment(this);
-        webViewPager = webViewLayout.findViewById(R.id.webViewPager);
-
         mConfig = AppUtil.getSavedConfig(getContext());
 
         loadingView = mRootView.findViewById(R.id.loadingView);
@@ -425,6 +420,10 @@ public class FolioPageFragment
 
     private void initWebView() {
 
+        FrameLayout webViewLayout = mRootView.findViewById(R.id.webViewLayout);
+        mWebview = webViewLayout.findViewById(R.id.folioWebView);
+        mWebview.setParentFragment(this);
+        webViewPager = webViewLayout.findViewById(R.id.webViewPager);
 
         if (FileUtil.language.equals("ar")) {
             webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
