@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -367,6 +368,9 @@ public class FolioPageFragment
 
             if (FileUtil.language.contains("ar")) {
                 mHtmlString = mHtmlString.replace("<body>", "<body dir='rtl'>");
+                webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+            } else {
+                webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             }
 
             mWebview.loadDataWithBaseURL(
@@ -376,6 +380,8 @@ public class FolioPageFragment
                     "UTF-8",
                     null);
         }
+
+
     }
 
     @SuppressWarnings("unused")
@@ -425,11 +431,6 @@ public class FolioPageFragment
         mWebview.setParentFragment(this);
         webViewPager = webViewLayout.findViewById(R.id.webViewPager);
 
-        if (FileUtil.language.contains("ar")) {
-            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        } else {
-            webViewPager.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        }
 
         if (getActivity() instanceof FolioActivityCallback)
             mWebview.setFolioActivityCallback((FolioActivityCallback) getActivity());
@@ -977,6 +978,7 @@ public class FolioPageFragment
         mWebview.loadUrl(getString(R.string.reset_search_results));
         searchItemVisible = null;
     }
+
 
 
 }

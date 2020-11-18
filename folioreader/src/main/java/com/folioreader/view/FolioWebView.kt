@@ -13,7 +13,6 @@ import android.os.Looper
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GestureDetectorCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
@@ -32,7 +31,6 @@ import com.folioreader.model.HighLight
 import com.folioreader.model.HighlightImpl.HighlightStyle
 import com.folioreader.model.sqlite.HighLightTable
 import com.folioreader.ui.folio.DialogPublic.ImageQuotesDialog
-import com.folioreader.ui.folio.DialogPublic.ShareImageQuotesDialog
 import com.folioreader.ui.folio.activity.FolioActivity
 import com.folioreader.ui.folio.activity.FolioActivityCallback
 import com.folioreader.ui.folio.fragment.DictionaryFragment
@@ -44,7 +42,6 @@ import com.folioreader.util.KUtils.selectTab
 import com.folioreader.util.UiUtil
 import dalvik.system.PathClassLoader
 import kotlinx.android.synthetic.main.text_selection.view.*
-import org.readium.r2.streamer.parser.PubBox
 import org.springframework.util.ReflectionUtils
 import java.lang.ref.WeakReference
 
@@ -428,6 +425,11 @@ class FolioWebView : WebView {
         uiHandler.post {
             webViewPager = (parent as View).findViewById(R.id.webViewPager)
             webViewPager.setHorizontalPageCount(this@FolioWebView.horizontalPageCount)
+            if (FileUtil.language.contains("ar")) {
+                webViewPager.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            } else {
+                webViewPager.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.folioreader.view;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
@@ -15,9 +16,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.webkit.JavascriptInterface;
+import android.widget.ViewFlipper;
 
 import com.folioreader.R;
+import static android.content.Context.VIBRATOR_SERVICE;
 
 
 public class WebViewPager extends ViewPager {
@@ -28,6 +34,7 @@ public class WebViewPager extends ViewPager {
     private boolean takeOverScrolling;
     private boolean scrolling;
     private Handler handler;
+
     private GestureDetectorCompat gestureDetector;
 
 
@@ -48,6 +55,7 @@ public class WebViewPager extends ViewPager {
     }
 
     private void init() {
+
 
         handler = new Handler();
         gestureDetector = new GestureDetectorCompat(getContext(), new GestureListener());
@@ -179,7 +187,7 @@ public class WebViewPager extends ViewPager {
         }
 
         @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
             //Log.d(LOG_TAG, "-> onFling -> e1 = " + e1 + ", e2 = " + e2 + ", velocityX = " + velocityX + ", velocityY = " + velocityY);
             lastGestureType = LastGestureType.OnFling;
             return false;
@@ -193,16 +201,17 @@ public class WebViewPager extends ViewPager {
         boolean gestureReturn = gestureDetector.onTouchEvent(event);
         if (gestureReturn)
             return true;
-
+//
         boolean superReturn = super.onTouchEvent(event);
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (lastGestureType == LastGestureType.OnScroll ||
                     lastGestureType == LastGestureType.OnFling) {
-                //Log.d(LOG_TAG, "-> onTouchEvent -> takeOverScrolling = true, " + "lastGestureType = " + lastGestureType);
+                Log.d(LOG_TAG, "-> onTouchEvent -> takeOverScrolling = true, " + "lastGestureType = " + lastGestureType);
                 takeOverScrolling = true;
             }
             lastGestureType = null;
+        return false;
         }
 
         return superReturn;
@@ -255,4 +264,5 @@ public class WebViewPager extends ViewPager {
             setRotationY(180);
         }
     }
+
 }

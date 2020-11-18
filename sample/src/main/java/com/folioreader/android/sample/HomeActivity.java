@@ -90,7 +90,7 @@ public class HomeActivity extends AppCompatActivity
 
                 folioReader.setReadPosition(readPosition)
                         .setConfig(config, true)
-                        .openBook("file:///android_asset/TheSilverChair.epub","en","");
+                        .openBook("file:///android_asset/TheSilverChair.epub","Arabic","");
             }
         });
     }
