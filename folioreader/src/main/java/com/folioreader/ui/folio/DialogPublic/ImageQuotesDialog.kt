@@ -28,7 +28,7 @@ class ImageQuotesDialog : AppCompatActivity() {
 
         val titleText = intent.extras?.getString("selectedTxtKey")
         quoteText?.text = titleText
-        autherName?.text = "by ${FileUtil.mBookFileAuthor}"
+        autherName?.text = "by ${FileUtil.mBookAuthor}"
         bookname?.text = FileUtil.mBookname
 
         orangeColor?.setOnClickListener { changeColorOfLayout(it) }
