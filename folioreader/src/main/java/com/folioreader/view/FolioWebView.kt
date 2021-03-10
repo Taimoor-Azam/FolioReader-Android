@@ -792,7 +792,8 @@ class FolioWebView : WebView {
                 ContextCompat.startActivity(context, intent, null)
             }
             if (items[item] == "Share text quote") {
-                UiUtil.share(context, selectedText)
+                val shae = "$selectedText\n \nAuther: ${FileUtil.mBookFileAuthor} \nBook Name : ${FileUtil.mBookname}"
+                UiUtil.share(context, shae)
             } else {
                 selectTab?.postValue("cancel")
             }

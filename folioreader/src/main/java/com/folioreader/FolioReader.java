@@ -113,9 +113,10 @@ public class FolioReader {
                 new IntentFilter(ACTION_FOLIOREADER_CLOSED));
     }
 
-    public FolioReader openBook(String assetOrSdcardPath,String language, String author) {
+    public FolioReader openBook(String assetOrSdcardPath,String language, String author,String book) {
         FileUtil.language = language;
         FileUtil.mBookFileAuthor = author;
+        FileUtil.mBookFileAuthor = book;
         Intent intent = getIntentFromUrl(assetOrSdcardPath, 0);
         context.startActivity(intent);
         return singleton;

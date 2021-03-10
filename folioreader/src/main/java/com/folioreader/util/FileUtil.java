@@ -25,6 +25,7 @@ public class FileUtil {
     private static final String TAG = FileUtil.class.getSimpleName();
     private static final String FOLIO_READER_ROOT = "folioreader";
      public static String mBookFileAuthor= "";
+     public static String mBookname= "";
      public static String language= "";
     public static  MutableLiveData<String> selectImageTab = new MutableLiveData();
     public static String saveEpubFileAndLoadLazyBook(final Context context,
