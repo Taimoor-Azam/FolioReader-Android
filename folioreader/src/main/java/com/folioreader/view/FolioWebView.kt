@@ -760,7 +760,7 @@ class FolioWebView : WebView {
                 popupWindow.isClippingEnabled = false
                 popupWindow.showAtLocation(this@FolioWebView, Gravity.NO_GRAVITY,
                         popupRect.left, popupRect.top)
-                onHighlightColorClicked(HighlightStyle.Yellow, false)
+//                onHighlightColorClicked(HighlightStyle.Yellow, false)
             } else {
                 Log.i(LOG_TAG, "-> Still scrolling, don't show Popup")
                 oldScrollX = currentScrollX
