@@ -1,36 +1,28 @@
 package com.folioreader.ui.folio.DialogPublic
 
+
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.view.*
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import com.folioreader.R
-
-
 import kotlinx.android.synthetic.main.fragment_share_image_quotes_dialog.*
-
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 
 @SuppressLint("ValidFragment")
-
 class ShareImageQuotesDialog(val title: String, val author: String) : DialogFragment() {
 
 

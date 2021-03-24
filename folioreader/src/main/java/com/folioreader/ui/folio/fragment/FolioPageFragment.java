@@ -2,7 +2,6 @@ package com.folioreader.ui.folio.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -14,8 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,8 +50,6 @@ import com.folioreader.model.sqlite.HighLightTable;
 import com.folioreader.ui.base.HtmlTask;
 import com.folioreader.ui.base.HtmlTaskCallback;
 import com.folioreader.ui.base.HtmlUtil;
-import com.folioreader.ui.folio.DialogPublic.ShareImageQuotesDialog;
-import com.folioreader.ui.folio.activity.FolioActivity;
 import com.folioreader.ui.folio.activity.FolioActivityCallback;
 import com.folioreader.ui.folio.mediaoverlay.MediaController;
 import com.folioreader.ui.folio.mediaoverlay.MediaControllerCallbacks;
@@ -72,11 +67,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.readium.r2.shared.Link;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 

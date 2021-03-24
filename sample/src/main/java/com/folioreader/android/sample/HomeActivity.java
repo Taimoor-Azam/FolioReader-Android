@@ -88,9 +88,9 @@ public class HomeActivity extends AppCompatActivity
                     config = new Config();
                 config.setAllowedDirection(Config.AllowedDirection.ONLY_HORIZONTAL);
 
-//                folioReader.setReadPosition(readPosition)
-//                        .setConfig(config, true)
-//                        .openBook("file:///android_asset/TheSilverChair.epub","Arabic","");
+                folioReader.setReadPosition(readPosition)
+                        .setConfig(config, true)
+                        .openBook(R.raw.adventures);
             }
         });
     }
@@ -178,9 +178,9 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
-//        Toast.makeText(this,
-//                "highlight id = " + highlight.getUUID() + " type = " + type,
-//                Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,
+                "highlight id = " + highlight.getUUID() + " type = " + type,
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -175,7 +175,7 @@ class FolioWebView : WebView {
         Log.d(LOG_TAG, "-> dismissPopupWindow -> " + parentFragment.spineItem.href)
         val wasShowing = popupWindow.isShowing
         if (Looper.getMainLooper().thread == Thread.currentThread()) {
-            if (!wasShowing)
+            if (wasShowing)
                 popupWindow.dismiss()
         } else {
             uiHandler.post { popupWindow.dismiss() }
@@ -248,30 +248,30 @@ class FolioWebView : WebView {
 
         viewTextSelection.yellowHighlight.setOnClickListener {
             Log.v(LOG_TAG, "-> onClick -> yellowHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Yellow, bit)
+            onHighlightColorItemsClicked(HighlightStyle.Yellow, false)
             bit = true
         }
         viewTextSelection.greenHighlight.setOnClickListener {
             Log.v(LOG_TAG, "-> onClick -> greenHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Green, bit)
+            onHighlightColorItemsClicked(HighlightStyle.Green, false)
             bit = true
 
         }
         viewTextSelection.blueHighlight.setOnClickListener {
             Log.v(LOG_TAG, "-> onClick -> blueHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Blue, bit)
+            onHighlightColorItemsClicked(HighlightStyle.Blue, false)
             bit = true
 
         }
         viewTextSelection.pinkHighlight.setOnClickListener {
             Log.v(LOG_TAG, "-> onClick -> pinkHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Pink, bit)
+            onHighlightColorItemsClicked(HighlightStyle.Pink, false)
             bit = true
 
         }
         viewTextSelection.underlineHighlight.setOnClickListener {
             Log.v(LOG_TAG, "-> onClick -> underlineHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Underline, bit)
+            onHighlightColorItemsClicked(HighlightStyle.Underline, false)
             bit = true
 
         }

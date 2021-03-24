@@ -51,7 +51,7 @@ public class FolioReader {
         void onFolioReaderClosed();
     }
 
-    private BroadcastReceiver highlightReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver highlightReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             HighlightImpl highlightImpl = intent.getParcelableExtra(HighlightImpl.INTENT);
@@ -63,7 +63,7 @@ public class FolioReader {
         }
     };
 
-    private BroadcastReceiver readPositionReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver readPositionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -74,7 +74,7 @@ public class FolioReader {
         }
     };
 
-    private BroadcastReceiver closedReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver closedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (onClosedListener != null)
